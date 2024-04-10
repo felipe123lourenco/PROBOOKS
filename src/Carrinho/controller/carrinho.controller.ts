@@ -3,7 +3,7 @@ import { CarrinhoSevice } from "../service/carrinho";
 import { CarrinhoDTO } from "../dto/carrinhoDTO";
 import { CadastraCompraService } from "../service/cadastraCompra";
 import { CompraDTO } from "../dto/compraDTO";
-
+import { UUID } from "crypto";
 
 @Controller('carrinho')
 export class CarrinhoController {
@@ -14,7 +14,7 @@ export class CarrinhoController {
     ){}
     
     @Post('adicionaLivro/:id')
-    AdicionaLivroCarrinho(@Param('id') id: string, @Body() data: CarrinhoDTO) {
+    AdicionaLivroCarrinho(@Param('id') id: UUID, @Body() data: CarrinhoDTO) {
         data.idUsuario = id;
         return this.CarrinhoService.adicionaLivro;
     }
@@ -28,7 +28,6 @@ export class CarrinhoController {
     @Post('criaCompra/')
     CriaCompra(@Body() compra: CompraDTO) {
         return this.cadastrarCompraService.cadastraCompra(this.CarrinhoService.carrinho,compra.formaPagamento,compra.parcelas);
-    }
-    
+    }    
 
 }

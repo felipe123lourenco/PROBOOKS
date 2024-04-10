@@ -1,6 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { IsInt, IsNumber, IsString } from "class-validator";
-import { LivroEntity } from "src/Livro/entity/Livro";
+import { Type } from "class-transformer";
+import { IsArray, IsInt, IsNumber, IsString, IsUUID, ValidateNested } from "class-validator";
+import { validaUsuario } from "../decorators/validaUsuarioExiste";
+import { UUID } from "crypto";
+import { LivroEntity } from "src/Livro/entity/livro.entity";
+
 
 Injectable()
 export class ItemDTO {
@@ -16,11 +20,15 @@ export class ItemDTO {
 Injectable()
 export class CarrinhoDTO {
 
-    @IsString()
-    idUsuario: string;
+    @IsUUID()
+    @validaUsuario({message:'Usuario inexistente'})
+    idUsuario: UUID;
     
     @IsNumber()
     total: number;
     
+    @ValidateNested()
+    @IsArray()
+    @Type(() => ItemDTO)
     items: ItemDTO[];
 }

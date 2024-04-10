@@ -1,9 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import { IsDate, IsISBN, IsInt, IsNumber, IsString, MaxLength, Min, MinDate, MinLength } from "class-validator";
+import { IsISBN, IsInt, IsNumber, IsString, MaxLength, Min, MinDate, MinLength  } from "class-validator";
+import { Transform, Type } from 'class-transformer';
 import { IsbnNaoExistente } from "../Decorators/validaIsbnExistente";
 import { CategoriaExistente } from "../Decorators/categoriaExistente";
 import { AutorExistente } from "../Decorators/autorExistente";
 import { validaPreco } from "../Decorators/verificaPrecoCategoria";
+
 
 
 @Injectable()
@@ -33,7 +35,7 @@ export class LivroDTO {
     @IsbnNaoExistente({message:'ISBN já cadastrado'})
     isbn: string;
 
-    @IsDate()
+    @Transform(({ value }) => new Date(value))
     @MinDate(new Date(), {message: "Data deve estar no futuro"})
     data: Date;
 
@@ -41,7 +43,7 @@ export class LivroDTO {
     categoria: string;
 
     @AutorExistente({message: 'Autor inexistente'})
-    autor: string;
+    autorNome: string;
 
 }
 

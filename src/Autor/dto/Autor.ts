@@ -14,6 +14,5 @@ export class CriaAutorDTO {
     @IsString()
     @MinLength(100,{message: 'Biografia deve ter no mínimo 100 caracteres'})
     @MaxLength(500, {message: 'Biografia não deve ultrapassar 500 caracteres'})
-    biografia: string;
-    
+    biografia: string;    
 }

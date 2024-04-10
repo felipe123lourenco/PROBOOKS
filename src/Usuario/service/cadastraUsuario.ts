@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { UsuarioDTO } from "../dto/UsuarioDTO";
-import { UsuarioEntity } from "../entity/usuario";
+import { UsuarioEntity } from "../entity/usuario.entity";
 import { UsuarioRepository } from "../repository/usuario_repositorio";
 import { Injectable } from "@nestjs/common";
 
@@ -12,7 +12,7 @@ export class CadastraUsuarioService {
         ){}
         
         
-    cadastraUsurario(input: UsuarioDTO): UsuarioEntity {
+    async cadastraUsurario(input: UsuarioDTO): Promise<UsuarioEntity> {
        
             const { primeiroNome, ultimoNome, ...rest } = input
         
@@ -22,7 +22,7 @@ export class CadastraUsuarioService {
                 ...rest
             };
         
-            this.usuarioRepositorio.salvar(novoUsuario);
+            await this.usuarioRepositorio.salvar(novoUsuario);
          
             return novoUsuario;
         };

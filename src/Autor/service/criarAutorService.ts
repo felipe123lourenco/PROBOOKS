@@ -23,7 +23,6 @@ export class CriarAutorService {
         
         return novoAutor;
     }
-
 }
 
 
