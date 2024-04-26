@@ -1,34 +1,42 @@
-import { Injectable } from "@nestjs/common";
-import { Type } from "class-transformer";
-import { IsArray, IsInt, IsNumber, IsString, IsUUID, ValidateNested } from "class-validator";
-import { validaUsuario } from "../decorators/validaUsuarioExiste";
-import { UUID } from "crypto";
-import { LivroEntity } from "src/Livro/entity/livro.entity";
+import { Injectable } from '@nestjs/common';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsInt,
+  IsNumber,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
+import { validaUsuario } from '../decorators/validaUsuarioExiste';
+import { UUID } from 'crypto';
+import { IsbnExistente } from 'src/Livro/Decorators/validaIsbnExistente';
 
-
-Injectable()
+Injectable();
 export class ItemDTO {
-    item: LivroEntity;
+  @IsbnExistente({ message: 'ISBN não cadastrado' })
+  isbn: string;
 
-    @IsInt()
-    quantity: number;
+  @IsInt()
+  quantity: number;
 
-    @IsNumber()
-    total: number;
+  @IsNumber()
+  total: number;
 }
 
-Injectable()
+Injectable();
 export class CarrinhoDTO {
+  @IsUUID()
+  id: string;
 
-    @IsUUID()
-    @validaUsuario({message:'Usuario inexistente'})
-    idUsuario: UUID;
-    
-    @IsNumber()
-    total: number;
-    
-    @ValidateNested()
-    @IsArray()
-    @Type(() => ItemDTO)
-    items: ItemDTO[];
+  @IsUUID()
+  @validaUsuario({ message: 'Usuario inexistente' })
+  idUsuario: UUID;
+
+  @IsNumber()
+  total: number;
+
+  @ValidateNested()
+  @IsArray()
+  @Type(() => ItemDTO)
+  items: ItemDTO[];
 }

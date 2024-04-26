@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { LivroController } from './controller/livro.controller';
 import { LivroRepository } from './repository/livro_repositorio';
 import { AutorModule } from '../Autor/autor.module';
@@ -8,16 +10,19 @@ import { CadastraLivroServices } from './service/cadastraLivro';
 import { LivroDTO } from './dto/livroDTO';
 import { AutorExiste } from './Decorators/autorExistente';
 import { CategoriaExiste } from './Decorators/categoriaExistente';
-import { IsbnNaoExiste } from './Decorators/validaIsbnExistente';
+import { IsbnExiste, IsbnNaoExiste } from './Decorators/validaIsbnExistente';
 import { ValidaPrecoCategoria } from './Decorators/verificaPrecoCategoria';
-import { AutorRepositorio } from 'src/Autor/repository/autor_repositorio';
-import { CategoriaRepository } from 'src/Categoria/repository/categoria_repositorio';
-
+import { LivroEntity } from './entity/livro.entity';
 
 @Module({
-  imports: [CategoriaModule, AutorModule],
+  imports: [
+    TypeOrmModule.forFeature([LivroEntity]),
+    CategoriaModule,
+    AutorModule,
+  ],
   controllers: [LivroController],
-  providers: [CadastraLivroServices,
+  providers: [
+    CadastraLivroServices,
     ListaLivroServices,
     LivroRepository,
     LivroDTO,
@@ -25,8 +30,7 @@ import { CategoriaRepository } from 'src/Categoria/repository/categoria_reposito
     CategoriaExiste,
     IsbnNaoExiste,
     ValidaPrecoCategoria,
-    AutorRepositorio,
-    CategoriaRepository
   ],
+  exports: [IsbnNaoExiste, IsbnExiste, ListaLivroServices],
 })
 export class LivroModule {}
